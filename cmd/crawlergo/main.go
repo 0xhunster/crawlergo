@@ -268,10 +268,10 @@ func outputResult(result *pkg.Result) {
         // Prepare final output
         rawOutput := strings.Join(urlList, "\n")
 
-        // Save to file if outputJsonPath is provided
-        if len(outputJsonPath) > 0 {
-            tools.WriteFile(outputJsonPath, []byte(rawOutput))
-            fmt.Printf("Sorted unique raw URLs written to %s\n", outputJsonPath)
+        // Check if outputRawPath is provided (new fix for correct file handling)
+        if len(outputRawPath) > 0 {
+            tools.WriteFile(outputRawPath, []byte(rawOutput))
+            fmt.Printf("Sorted unique raw URLs written to %s\n", outputRawPath)
         } else {
             // Print to console if no file is specified
             fmt.Println(rawOutput)
@@ -279,7 +279,7 @@ func outputResult(result *pkg.Result) {
     }
 
     // Keep original JSON output functionality
-    if outputMode != "raw" && len(outputJsonPath) != 0 {
+    if outputMode == "json" && len(outputJsonPath) != 0 {
         resBytes := getJsonSerialize(result)
         tools.WriteFile(outputJsonPath, resBytes)
     }
